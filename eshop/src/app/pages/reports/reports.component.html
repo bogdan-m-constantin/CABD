@@ -1,0 +1,123 @@
+<mat-tab-group>
+  <mat-tab label="Starea Curenta Card">
+    <div class="wrapper">
+      <div class="parameters mat-elevation-z4">
+        <mat-form-field>
+          <mat-label>Card</mat-label>
+          <mat-select [(ngModel)]="this.card1">
+            <mat-option [value]="null">Don't use card</mat-option>
+            <mat-option *ngFor="let card of carduri" [value]="card">{{card.serie}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <span class="spacer">
+        </span>
+        <button mat-raised-button (click)="showReport1()">Show Report</button>
+      </div>
+      <div class="display">
+        <div class="card mat-elevation-z4" *ngIf="raport1">
+          <span class="serie">Serie: {{raport1.serie}}</span>
+          <span class="puncte">Puncte: {{raport1.puncte}}</span>
+        </div>
+      </div>
+    </div>
+
+  </mat-tab>
+  <mat-tab label="Perioada cea mai lunga">
+    <div class="wrapper">
+      <div class="parameters mat-elevation-z4">
+        <mat-form-field>
+          <mat-label>Card</mat-label>
+          <mat-select [(ngModel)]="this.card1">
+            <mat-option [value]="null">Don't use card</mat-option>
+            <mat-option *ngFor="let card of carduri" [value]="card">{{card.serie}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <span class="spacer">
+        </span>
+        <button mat-raised-button (click)="showReport2()">Show Report</button>
+      </div>
+      <div class="display">
+        <div class="card mat-elevation-z4" *ngIf="raport2">
+          <span class="serie">Serie: {{raport2.serie}}</span>
+          <span class="puncte">Puncte: {{raport2.puncte}}</span>
+          <span>Interval: {{raport2.start | date:'dd.MM.yyyy HH:mm:ss'}} -
+            {{raport2.end | date:'dd.MM.yyyy HH:mm:ss'}}</span>
+
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Evolutia">
+    <div class="wrapper">
+      <div class="parameters mat-elevation-z4">
+        <mat-form-field>
+          <mat-label>Card</mat-label>
+          <mat-select [(ngModel)]="this.card1">
+            <mat-option [value]="null">Don't use card</mat-option>
+            <mat-option *ngFor="let card of carduri" [value]="card">{{card.serie}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <span class="spacer">
+        </span>
+        <button mat-raised-button (click)="showReport3()">Show Report</button>
+      </div>
+      <div class="display">
+        <table *ngIf="raport3">
+          <thead>
+            <tr>
+              <th>Moment schimbare</th>
+              <th>Puncte</th>
+              <th>Diferenta</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let r of raport3">
+              <td>{{r.timestamp | date:'dd.MM.yyyy HH:mm:ss' }}</td>
+              <td>{{r.puncte}}</td>
+              <td [class.positive]="r.diferenta > 0 " [class.negative]="r.diferenta < 0 ">{{r.diferenta > 0 ? '+' :
+                ''}}{{r.diferenta |number}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Starea in timp">
+    <div class="wrapper">
+      <div class="parameters mat-elevation-z4">
+        <mat-form-field>
+          <mat-label>Card</mat-label>
+          <mat-select [(ngModel)]="this.card1">
+            <mat-option [value]="null">Don't use card</mat-option>
+            <mat-option *ngFor="let card of carduri" [value]="card">{{card.serie}} - {{card.puncte}} Points</mat-option>
+          </mat-select>
+        </mat-form-field><mat-form-field>
+          <mat-label>Data</mat-label>
+          <input [(ngModel)]="timestamp" matInput [matDatepicker]="picker">
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Ora</mat-label>
+          <input [(ngModel)]="ora" matInput type="number" decimals="0">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Minut</mat-label>
+          <input [(ngModel)]="minut" matInput type="number" decimals="0">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Secunda</mat-label>
+          <input [(ngModel)]="secunda" matInput type="number" decimals="0">
+        </mat-form-field><span class="spacer">
+        </span>
+        <button mat-raised-button (click)="showReport4()">Show Report</button>
+      </div>
+      <div class="display">
+        <div class="card mat-elevation-z4" *ngIf="raport4">
+          <span class="serie">Serie: {{raport4.serie}}</span>
+          <span class="puncte">Puncte: {{raport4.puncte}}</span>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

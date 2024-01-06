@@ -1,0 +1,37 @@
+<h1 mat-dialog-title> Finish order</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Card</mat-label>
+    <mat-select [(ngModel)]="this.comanda.card" (valueChange)="deductPoints($event)">
+      <mat-option [value]="null">Don't use card</mat-option>
+      <mat-option *ngFor="let card of cards" [value]="card">{{card.serie}} - {{card.puncte}} Points</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="address-selector">
+    <mat-form-field>
+      <mat-label>Delivery Address</mat-label>
+      <mat-select [(ngModel)]="this.comanda.adresaLivrare">
+        <mat-option *ngFor="let adresa of adrese" [value]="adresa">{{adresa.denumire}} - {{adresa.judet}}-
+          {{adresa.localitate}} - {{adresa.adresaIntreaga}} - {{adresa.codFiscal}}- {{adresa.nrRegCom}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="address-selector">
+    <mat-form-field>
+      <mat-label>Invocing Address</mat-label>
+      <mat-select [(ngModel)]="this.comanda.adresaFacturare">
+        <mat-option *ngFor="let adresa of adrese" [value]="adresa">{{adresa.denumire}} - {{adresa.judet}}-
+          {{adresa.localitate}} - {{adresa.adresaIntreaga}} - {{adresa.codFiscal}}- {{adresa.nrRegCom}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+
+  <div class="total">Order Total:{{total | number: '1.2-2'}}</div>
+  <div class="total">Points Used: {{this.comanda.puncteFolosite| number: '1.0-0'}}</div>
+  <div class="total">Grand Total: {{grandTotal | number: '1.2-2'}}</div>
+
+
+  <button mat-raised-button color="primary" (click)="finishOrder()">Send Order</button>
+</div>

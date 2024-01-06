@@ -1,0 +1,49 @@
+<mat-toolbar color="primary">
+
+  <h1>eShop</h1>
+  <span class="spacer"></span>
+  <mat-form-field>
+    <mat-select (valueChange)="setClient($event)">
+      <mat-option *ngFor="let client of clienti" [value]="client">{{client.nume}} {{client.prenume}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button button (click)="drawer.toggle()" mat-icon-button class=" example-icon favorite-icon"
+    aria-label="Example icon-button with heart icon">
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
+  <button button routerLink="/reports" mat-icon-button class=" example-icon favorite-icon"
+    aria-label="Example icon-button with heart icon">
+    <mat-icon>leaderboard</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-drawer-container>
+  <mat-drawer #drawer mode="over" position="end" class="mat-elevation-z5">
+    <div class="shopping_cart">
+      <div class="items">
+        <div class="item mat-elevation-z2" *ngFor=" let item of comanda.pozitii">
+          <span class="title">{{item.produs.denumire}}</span>
+          <span class="multiplier">x</span>
+          <span class="quant">{{item.cantitate | number: '1.0-0'}}</span>
+          <span class="eq">=</span>
+          <span class="total">{{item.cantitate * item.pret| number: '1.2-2'}}</span>
+        </div>
+      </div>
+      <div class="interface">
+        <div class="total">Total: {{total| number: '1.2-2' }}</div>
+        <button mat-raised-button style="width: 100%;" color="primary" (click)="finishOrder()">Finish Order</button>
+      </div>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="content" style="height: calc(100vh - 64px);">
+      <div class="product-container mat-elevation-z2" *ngFor="let produs of produse">
+        <span class="title">{{produs.denumire}}</span>
+        <img src="../../../assets/placeholder.svg">
+        <span class="price">{{produs.pret}}</span>
+        <button mat-raised-button color="primary" (click)="addItemToCart(produs)"><mat-icon>add</mat-icon>Add to
+          Cart</button>
+      </div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

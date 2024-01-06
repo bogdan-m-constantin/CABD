@@ -1,0 +1,59 @@
+.parameters {
+  width: calc(100vw - 16px);
+  display: flex;
+  flex-direction: row;
+  padding: 8px;
+  margin-bottom: 32px;
+}
+
+.card {
+  width: 200px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  line-height: 150%;
+
+  .serie {
+    font-size: 32px;
+  }
+
+  .puncte {
+    font-size: 24px;
+  }
+
+  padding:16px;
+  margin: 16px;
+
+  span {
+    margin-bottom: 8px;
+  }
+}
+
+.display {
+  table {
+    border-collapse: collapse;
+
+    tr:nth-child(2n+1) {
+      background: #ececec;
+    }
+
+    td,
+    th {
+      padding: 16px;
+    }
+
+    th {
+      background: #333;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .positive {
+      color: green;
+    }
+
+    .negative {
+      color: red;
+    }
+  }
+}
