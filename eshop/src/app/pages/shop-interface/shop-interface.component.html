@@ -16,9 +16,8 @@
     <mat-icon>leaderboard</mat-icon>
   </button>
 </mat-toolbar>
-
 <mat-drawer-container>
-  <mat-drawer #drawer mode="over" position="end" class="mat-elevation-z5">
+  <mat-drawer #drawer mode="side" position="end" opened class="mat-elevation-z5">
     <div class="shopping_cart">
       <div class="items">
         <div class="item mat-elevation-z2" *ngFor=" let item of comanda.pozitii">
@@ -39,7 +38,9 @@
     <div class="content" style="height: calc(100vh - 64px);">
       <div class="product-container mat-elevation-z2" *ngFor="let produs of produse">
         <span class="title">{{produs.denumire}}</span>
-        <img src="../../../assets/placeholder.svg">
+        <div style="display: flex;align-items: center;justify-content: center; width: 100%;">
+          <img src="../../../assets/placeholder.svg">
+        </div>
         <span class="price">{{produs.pret}}</span>
         <button mat-raised-button color="primary" (click)="addItemToCart(produs)"><mat-icon>add</mat-icon>Add to
           Cart</button>

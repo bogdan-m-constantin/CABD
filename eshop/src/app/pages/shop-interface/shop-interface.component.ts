@@ -88,6 +88,7 @@ export class ShopInterfaceComponent implements OnInit {
           puncteFolosite: 0,
         }
         window.localStorage.setItem("comanda", JSON.stringify(this.comanda));
+        this.total = 0;
       }
     })
   }

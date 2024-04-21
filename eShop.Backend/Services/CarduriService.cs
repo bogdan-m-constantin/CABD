@@ -13,7 +13,13 @@ namespace eShop.Backend.Services
         {
             using var con = new SqlConnection(_sql.ConnectionString);
             con.Open();
-            using var cmd = new SqlCommand("SELECT * FROM CARDURI WHERE (@SERIE IS NULL OR @SERIE = SERIE_CARD) AND (@CLIENTID = -1 OR @CLIENTID = CLIENTID)", con);
+            using var cmd = new SqlCommand("""
+                SELECT 
+                    * 
+                FROM CARDURI 
+                WHERE 
+                    (@SERIE IS NULL OR @SERIE = SERIE_CARD) AND (@CLIENTID = -1 OR @CLIENTID = CLIENTID)
+               """, con);
             cmd.Parameters.Add(new("@SERIE", serie ?? (object)DBNull.Value));
             cmd.Parameters.Add(new("@CLIENTID", clientId));
             using var reader = cmd.ExecuteReader();
@@ -81,21 +87,20 @@ namespace eShop.Backend.Services
         {
             using var con = new SqlConnection(_sql.ConnectionString);
             con.Open();
-            using var cmd = new SqlCommand("SELECT " +
-                "SERIE_CARD,PUNCTE,TIMESTAMP_START,TIMESTAMP_END " +
-                "FROM ( " +
-                "SELECT " +
-                "CD.SERIE_CARD, " +
-                "TIMESTAMP_START, " +
-                "TIMESTAMP_END, " +
-                "PUNCTE, " +
-                "ROW_NUMBER() OVER (ORDER BY DATEDIFF(SECOND,TIMESTAMP_START,TIMESTAMP_END) DESC) RNK " +
-                "FROM CARDURI_DATA CD " +
-                "WHERE  " +
-                "SERIE_CARD = @SERIE_CARD  " +
-                "AND PUNCTE = (SELECT MAX(PUNCTE) PUNCTE FROM CARDURI_DATA WHERE SERIE_CARD = @SERIE_CARD)" +
-                ") T  " +
-                "WHERE RNK = 1 ", con);
+            using var cmd = new SqlCommand(
+               """
+                SELECT 
+                    SERIE_CARD,PUNCTE,TIMESTAMP_START,TIMESTAMP_END 
+                FROM ( 
+                    SELECT 
+                        CD.SERIE_CARD, TIMESTAMP_START, TIMESTAMP_END, PUNCTE,  
+                        ROW_NUMBER() OVER (ORDER BY DATEDIFF(SECOND,TIMESTAMP_START,TIMESTAMP_END) DESC) RNK 
+                    FROM CARDURI_DATA CD 
+                    WHERE  
+                    SERIE_CARD = @SERIE_CARD  
+                    AND PUNCTE = (SELECT MAX(PUNCTE) PUNCTE FROM CARDURI_DATA WHERE SERIE_CARD = @SERIE_CARD)
+                ) T  WHERE RNK = 1 
+               """, con);
             cmd.Parameters.Add(new("@SERIE_CARD", serie ?? (object)DBNull.Value));
             using var reader = cmd.ExecuteReader();
             if (reader.Read())
@@ -116,8 +121,13 @@ namespace eShop.Backend.Services
         {
             using var con = new SqlConnection(_sql.ConnectionString);
             con.Open();
-            using var cmd = new SqlCommand("SELECT TIMESTAMP_START, PUNCTE,PUNCTE - ISNULL(LAG(PUNCTE,1) OVER (ORDER BY TIMESTAMP_START),0) DIFERENTA " +
-                "FROM CARDURI_DATA WHERE SERIE_CARD = @SERIE_CARD ORDER BY TIMESTAMP_START", con);
+            using var cmd = new SqlCommand("""
+                    SELECT 
+                        TIMESTAMP_START, PUNCTE,PUNCTE - ISNULL(LAG(PUNCTE,1) OVER (ORDER BY TIMESTAMP_START),0) DIFERENTA 
+                    FROM CARDURI_DATA 
+                    WHERE SERIE_CARD = @SERIE_CARD 
+                    ORDER BY TIMESTAMP_START
+                    """, con);
             cmd.Parameters.Add(new("@SERIE_CARD", serie ?? (object)DBNull.Value));
             using var reader = cmd.ExecuteReader();
             var lst = new List<EvolutieCard>();
@@ -138,7 +148,12 @@ namespace eShop.Backend.Services
         {
             using var con = new SqlConnection(_sql.ConnectionString);
             con.Open();
-            using var cmd = new SqlCommand("SELECT SERIE_CARD,PUNCTE FROM CARDURI_DATA WHERE SERIE_CARD = @SERIE_CARD AND  @TIMESTAMP BETWEEN TIMESTAMP_START AND ISNULL(TIMESTAMP_END,GETDATE())", con);
+            using var cmd = new SqlCommand("""
+                    SELECT 
+                        SERIE_CARD,PUNCTE 
+                    FROM CARDURI_DATA 
+                    WHERE SERIE_CARD = @SERIE_CARD AND  @TIMESTAMP BETWEEN TIMESTAMP_START AND ISNULL(TIMESTAMP_END,GETDATE())
+                """, con);
             cmd.Parameters.Add(new("@SERIE_CARD", serie));
             cmd.Parameters.Add(new("@TIMESTAMP", timestamp.ToLocalTime()));
             using var reader = cmd.ExecuteReader();
